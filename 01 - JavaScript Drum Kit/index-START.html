@@ -59,6 +59,32 @@
 
 <script>
 
+  window.addEventListener('keydown', playSound);
+  
+  // get all key divs from DOM and call removeTransition on it when transitionend event occur
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => {
+    key.addEventListener('transitionend', removeTransition)
+  })
+  
+  // play sound and change styles of key divs
+  function playSound(e) {
+    
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`)
+  
+    if (!audio) return; // if not in the defined keys range, do nothing and return;
+  
+    audio.currentTime = 0;
+    audio.play();
+    key.classList.add('playing');
+  }
+
+  // remove the class playing when transform transitionend event occur
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    this.classList.remove('playing')
+  }
 </script>
 
 
